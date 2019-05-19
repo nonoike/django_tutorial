@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+  web:
+    image: python:3.7.3-alpine3.9
+    container_name: django
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+    tty: true
+    volumes:
+      - ..:/app
+    command: >
+      sh -c 'apk update &&
+      apk add postgresql-dev gcc musl-dev &&
+      pip install --upgrade pip &&
+      pip install --upgrade pip setuptools &&
+      pip install -r /app/requirements.txt &&
+      python /app/mysite/manage.py runserver 0:8000'
+  db:
+    image: postgres:11.3-alpine
+    container_name: django-db
+    environment:
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_USER: "root"
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - 5432:543
+    restart: always
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
