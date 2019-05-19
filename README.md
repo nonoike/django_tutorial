@@ -10,3 +10,8 @@ python manage.py runserver
 ```bash
 docker exec -it django sh -c "python /app/mysite/manage.py shell"
 ```
+
+## 管理ユーザーの作成
+```bash
+docker exec -it django sh -c "python /app/mysite/manage.py createsuperuser"
+```
